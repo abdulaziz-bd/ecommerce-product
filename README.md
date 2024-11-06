@@ -1,8 +1,58 @@
-# React + Vite
+# E-commerce Product
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple e-commerce product listing application built with React, showing products from FakeStore API with cart functionality.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- View all products in a responsive grid layout
+- Add/Remove products to cart
+- View cart summary with total
+- Filter products by category
+- Sort products by price
+- Responsive design for all devices
+
+## Tech Stack
+
+- React + Vite
+- Tailwind CSS
+- FakeStore API
+
+## Getting Started
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/abdulaziz-bd/ecommerce-product.git
+```
+
+2. Install dependencies
+
+```bash
+npm install
+```
+
+3. Run the development server
+
+```bash
+npm run dev
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## Live Demo
+
+You can access the live demo of the Project Manager Application [here](https://vercel.app/).
+
+## Contact
+
+Md Abdul Aziz - [@abdulazizfahad](https://www.linkedin.com/in/abdulazizfahad/) - <abdulazizbd17@gmail.com>
+
+Project Link: [https://github.com/abdulaziz-bd/ecommerce-product](https://github.com/abdulaziz-bd/ecommerce-product)

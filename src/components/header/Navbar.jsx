@@ -1,3 +1,5 @@
+import LWSLogo from "../../assets/logo.svg";
+
 export default function Navbar() {
   return (
     <nav aria-label="Top" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -29,7 +31,7 @@ export default function Navbar() {
           <div className="ml-4 flex lg:ml-0">
             <a href="#">
               <span className="sr-only">Your Company</span>
-              <img className="h-8 w-auto" src="./assets/logo.svg" alt="" />
+              <img className="h-8 w-auto" src={LWSLogo} alt="Logo" />
             </a>
           </div>
 

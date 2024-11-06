@@ -1,26 +1,49 @@
+import { useContext, useEffect, useRef, useState } from "react";
+import { CartSVG } from "../../assets/svg/SVG";
+import { ShopContext } from "../../context";
+import CartModal from "./CartModal";
+
 export default function ProductCart() {
+  const { state } = useContext(ShopContext);
+  const [showCart, setShowCart] = useState(false);
+  const cartDropDownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        cartDropDownRef.current &&
+        !cartDropDownRef.current.contains(event.target)
+      ) {
+        setShowCart(false);
+      }
+    }
+
+    // Add event listener when dropdown is open
+    if (showCart) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    // Cleanup the event listener
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showCart]);
+
   return (
-    <div className="flow-root">
-      <a href="#" className="group -m-2 flex items-center p-2">
-        <svg
-          className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-          />
-        </svg>
-        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-          0
+    <div className="flow-root relative inline-block text-left">
+      <button
+        className="group -m-2 flex items-center p-2"
+        aria-expanded={showCart}
+        aria-haspopup="true"
+        onClick={() => setShowCart(!showCart)}
+      >
+        <CartSVG />
+        <span className="ml-2 mt-1 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+          {state.cart.reduce((acc, cur) => acc + cur.quantity, 0)}
         </span>
         <span className="sr-only">items in cart, view bag</span>
-      </a>
+      </button>
+      {showCart && <CartModal onRef={cartDropDownRef} />}
     </div>
   );
 }

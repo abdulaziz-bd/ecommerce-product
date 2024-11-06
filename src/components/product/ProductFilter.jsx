@@ -1,64 +1,99 @@
+import { useContext, useEffect, useRef, useState } from "react";
+import { DownArrowSVG } from "../../assets/svg/SVG";
+import { CategoryContext, ShopContext } from "../../context";
+
 export default function ProductFilter() {
+  const { state, dispatch } = useContext(ShopContext);
+  const { categories, loading, error } = useContext(CategoryContext);
+  const [showFilter, setShowFilter] = useState(false);
+  const filterDropDownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        filterDropDownRef.current &&
+        !filterDropDownRef.current.contains(event.target)
+      ) {
+        setShowFilter(false);
+      }
+    }
+
+    // Add event listener when dropdown is open
+    if (showFilter) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    // Cleanup the event listener
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showFilter]);
+
+  const handleFilter = (category) => {
+    dispatch({ type: "SET_FILTER", payload: category });
+  };
+
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left" ref={filterDropDownRef}>
       <div>
         <button
           type="button"
           className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-400 hover:text-gray-500 focus:text-gray-700 transition-all"
           id="filter-button"
-          aria-expanded="false"
+          aria-expanded={showFilter}
           aria-haspopup="true"
+          onClick={() => {
+            setShowFilter(!showFilter);
+          }}
         >
           Filter
-          <svg
-            className="-mr-1 h-5 w-5 text-gray-400"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-              clipRule="evenodd"
-            />
-          </svg>
+          <DownArrowSVG className={showFilter ? "rotate-180 transform" : ""} />
         </button>
       </div>
-      <div
-        className="absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden"
-        role="menu"
-        aria-orientation="vertical"
-        aria-labelledby="filter-button"
-        tabIndex="-1"
-        id="filter-dropdown"
-      >
-        <div className="py-1" role="none">
-          <label className="inline-flex w-full cursor-pointer hover:bg-gray-50 items-center px-4 py-2 text-sm text-gray-700">
-            <input
-              type="checkbox"
-              className="form-checkbox h-4 w-4"
-              id="filter-option-1"
-            />
-            <span className="ml-2">Category 1</span>
-          </label>
-          <label className="inline-flex w-full cursor-pointer hover:bg-gray-50 items-center px-4 py-2 text-sm text-gray-700">
-            <input
-              type="checkbox"
-              className="form-checkbox h-4 w-4"
-              id="filter-option-2"
-            />
-            <span className="ml-2">Category 2</span>
-          </label>
-          <label className="inline-flex w-full cursor-pointer hover:bg-gray-50 items-center px-4 py-2 text-sm text-gray-700">
-            <input
-              type="checkbox"
-              className="form-checkbox h-4 w-4"
-              id="filter-option-3"
-            />
-            <span className="ml-2">Category 3</span>
-          </label>
+      {showFilter && (
+        <div
+          className="absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="filter-button"
+          tabIndex="-1"
+          id="filter-dropdown"
+        >
+          <div className="py-1" role="none">
+            {loading.state ? (
+              <span className="block px-4 py-2 text-sm text-gray-700">
+                {loading.message}
+              </span>
+            ) : error ? (
+              <span className="block px-4 py-2 text-sm text-gray-700">
+                {error}
+              </span>
+            ) : (
+              categories.map((category, idx) => (
+                <label
+                  key={idx}
+                  className="inline-flex w-full cursor-pointer hover:bg-gray-50 items-center px-4 py-2 text-sm text-gray-700"
+                >
+                  <input
+                    type="checkbox"
+                    className="form-checkbox h-4 w-4"
+                    id="filter-option-1"
+                    checked={state.filter === category}
+                    onChange={() => {
+                      if (state.filter === category) {
+                        dispatch({ type: "SET_FILTER", payload: "" });
+                      } else {
+                        handleFilter(category);
+                      }
+                    }}
+                  />
+                  <span className="ml-2">{category}</span>
+                </label>
+              ))
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
