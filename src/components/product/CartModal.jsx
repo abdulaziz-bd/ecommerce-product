@@ -10,8 +10,8 @@ export default function CartModal({ onRef }) {
   const handleRemoveFromCart = (id) => {
     dispatch({ type: "REMOVE_FROM_CART", payload: { id } });
     toast.error(`Opps! Item deleted from Cart!`, {
-        position: "bottom-right",
-      });
+      position: "bottom-right",
+    });
   };
 
   const handleIncrease = (id) => {
@@ -23,9 +23,16 @@ export default function CartModal({ onRef }) {
 
   const handleDecrease = (id) => {
     dispatch({ type: "DECREASE_QUANTITY", payload: { id } });
-    toast.warn(`Item quantity decreased in Cart!`, {
-      position: "bottom-right",
-    });
+    const count = state.cart.find((item) => item.id === id).quantity;
+    if (count === 1) {
+      toast.error(`Opps! Item quantity cannot be less than 1!`, {
+        position: "bottom-right",
+      });
+    } else {
+      toast.success(`Item quantity decreased in Cart!`, {
+        position: "bottom-right",
+      });
+    }
   };
 
   return (

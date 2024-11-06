@@ -2,6 +2,10 @@
 
 A simple e-commerce product listing application built with React, showing products from FakeStore API with cart functionality.
 
+## Project Components
+
+![Project Components Screenshot](screenshot.png)
+
 ## Features
 
 - View all products in a responsive grid layout
@@ -49,7 +53,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Live Demo
 
-You can access the live demo of the Project Manager Application [here](https://vercel.app/).
+You can access the live demo of the Project Manager Application [here](https://ecommerce-product-ten.vercel.app/).
 
 ## Contact
 
